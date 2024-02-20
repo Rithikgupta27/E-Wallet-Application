@@ -54,7 +54,7 @@ public class BillPaymentServiceImpl implements BillPaymentService {
 				transaction.setAmount(bill.getAmount());
 				transaction.setDescription(bill.getBillDescription());
 				transaction.setTransactionDate(LocalDateTime.now());
-				transaction.setTransactionType("Bill Payment");
+				transaction.setTransactionType("Payment");
 				transaction.setWallet(wallet);
 				tDao.save(transaction);
 				bill.setWallet(wallet);
