@@ -31,12 +31,14 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public String checkCustomer(CustomerOtpDTO customerOTP) {
+		//here we checking number is valid in database
 		Customer existingCustomer = cDao.findByMobileNumber(customerOTP.getMobileNumber());
 		if (existingCustomer != null) {
-			// send otp
+			// generating and sending  4-digits  otp
 			String randomString = String.valueOf((int) (Math.random() * 10000));
 			return randomString;
 		} else {
+			//if mobile number not valid throw CustomerException
 			throw new CustomerException("Customer not registered, try Signing in");
 		}
 
@@ -44,10 +46,11 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public String checkNotACustomer(CustomerOtpDTO customerOTP) {
+		//make optional containner to check null value if we donot handle any null value it will throw nullpointerexceptions
 		Optional<Customer> existingCustomerOptional = Optional
 				.ofNullable(cDao.findByMobileNumber(customerOTP.getMobileNumber()));
 		if (existingCustomerOptional.isEmpty()) {
-			// send otp
+			// generate and send 4-digits otp
 			String randomString = String.valueOf((int) (Math.random() * 10000));
 			return randomString;
 		} else {
@@ -75,10 +78,11 @@ public class CustomerServiceImpl implements CustomerService {
 			CustomerSession cs = new CustomerSession();
 			cs.setCustomerId(customer.getCustomerId());
 			cs.setTimeStamp(LocalDateTime.now());
+			//generate random unique id while login 
 			String key = RandomString.make(8);
 			cs.setUniqueId(key);
-
-			CustomerSession cSession = csDao.save(cs);
+                        //saveing newly generate unique id in customer session table 
+	 		CustomerSession cSession = csDao.save(cs);
 			return cSession.toString();
 
 		} else {
