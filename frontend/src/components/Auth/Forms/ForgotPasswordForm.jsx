@@ -18,7 +18,8 @@ const ForgotPasswordForm = ({ switchToLoginForm, switchToSignUp }) => {
         hash |= 0;
       }
       let hashString = hash.toString();
-      hashString = hashString.slice(0, 15);
+        /*this may cause data loss*/
+      /* hashString = hashString.slice(0, 15);*/
     
       return hashString;
     }
